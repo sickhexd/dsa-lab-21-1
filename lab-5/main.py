@@ -38,7 +38,7 @@ def init_db():
     )
     ''')
     
-    # Добавление первого администратора (замените CHAT_ID на ваш)
+    
     try:
         cursor.execute("INSERT INTO admins (chat_id) VALUES (?)", ("6267394848",))
     except sqlite3.IntegrityError:
