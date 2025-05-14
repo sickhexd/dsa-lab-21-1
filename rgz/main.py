@@ -182,7 +182,7 @@ async def process_operation_type(message: types.Message, state: FSMContext):
     
     operation_type = message.text
     if operation_type not in ["РАСХОД", "ДОХОД"]:
-        await message.answer("Пожалуйста, выберите тип операции с помощью кнопок.")
+        await message.answer("Пожалуйста, выберите тип операции.")
         return
     
     await state.update_data(type_operation=operation_type)
@@ -200,13 +200,13 @@ async def process_operation_amount(message: types.Message, state: FSMContext):
         if amount <= 0:
             raise ValueError
     except ValueError:
-        await message.answer("Пожалуйста, введите корректную сумму (положительное число).")
+        await message.answer("Пожалуйста, введите сумму.")
         return
     
     await state.update_data(sum=amount)
     await state.set_state(AddOperationStates.waiting_for_date)
     await message.answer(
-        "Введите дату операции в формате ДД.ММ.ГГГГ (или 'сегодня' для текущей даты):",
+        "Введите дату операции в формате ДД.ММ.ГГГГ (или 'Cегодня' для текущей даты):",
         reply_markup=get_data_kb()
     )
 
@@ -224,7 +224,7 @@ async def process_operation_date(message: types.Message, state: FSMContext):
             datetime.datetime.strptime(date_str, "%d.%m.%Y")
             operation_date = date_str
         except ValueError:
-            await message.answer("Неверный формат даты. Введите дату в формате ДД.ММ.ГГГГ или 'сегодня'.")
+            await message.answer("Неверный формат даты. Введите дату в формате ДД.ММ.ГГГГ или 'Cегодня'.")
             return
     
     data = await state.get_data()
@@ -280,7 +280,7 @@ async def process_operations_currency(message: types.Message, state: FSMContext)
     
     currency = message.text
     if currency not in ["RUB", "USD", "EUR"]:
-        await message.answer("Пожалуйста, выберите валюту с помощью кнопок.")
+        await message.answer("Пожалуйста, выберите валюту.")
         return
     
     chat_id = message.chat.id
@@ -332,7 +332,7 @@ async def cmd_delaccount(message: types.Message):
     conn.commit()
     conn.close()
     
-    await message.answer("Ваш аккаунт и все связанные данные были удалены.", reply_markup=get_main_menu_kb())
+    await message.answer("Ваш аккаунт и все данные были удалены.", reply_markup=get_main_menu_kb())
 
 # Запуск бота
 async def main():
